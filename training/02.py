@@ -11,12 +11,12 @@ def print_world():
 
 default_args = {
     'owner': 'Behrooz',
-    'start_date': dt.datetime(2023, 10, 26, ),
+    'start_date': dt.datetime(2023, 10, 26),
     'retries': 1,
     'retry_delay': dt.timedelta(minutes=1),
 }
 
-with DAG('airflow_tutorial_v02',
+with DAG(dag_id='airflow_tutorial_v02',
          default_args=default_args,
          schedule_interval='* * * * *',
          ) as dag:
