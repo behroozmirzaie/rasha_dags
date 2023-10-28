@@ -14,11 +14,11 @@ default_args = {
     'start_date': dt.datetime.now(),
     'retries': 1,
     'retry_delay': dt.timedelta(minutes=1),
+    'schedule_interval': '@minute',
 }
 
 with DAG(dag_id='v02',
          default_args=default_args,
-         schedule='@minute',
          ) as dag:
     print_world = PythonOperator(task_id='print_every_minute_2',
                                  python_callable=print_world)
