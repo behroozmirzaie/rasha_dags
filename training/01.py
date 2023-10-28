@@ -11,7 +11,7 @@ def print_world():
 
 default_args = {
     'owner': 'me',
-    'start_date': dt.datetime(2017, 6, 1),
+    'start_date': dt.datetime(2023, 10, 26),
     'retries': 1,
     'retry_delay': dt.timedelta(minutes=5),
 }
