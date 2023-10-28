@@ -23,13 +23,12 @@ with DAG(
         start_date=dt.datetime.now(),
         schedule_interval="@daily",
 ) as dag:
-    try:
-        print('start creating table')
-        create_pet_table = PostgresOperator(
-            conn_id="postgres_data_source_1",
-            task_id="create_pet_table",
-            database="data_source",
-            sql="""
+    print('start creating table')
+    create_pet_table = PostgresOperator(
+        conn_id="postgres_data_source_1",
+        task_id="create_pet_table",
+        database="data_source",
+        sql="""
                 CREATE TABLE IF NOT EXISTS pet (
                 pet_id SERIAL PRIMARY KEY,
                 name VARCHAR NOT NULL,
@@ -37,6 +36,4 @@ with DAG(
                 birth_date DATE NOT NULL,
                 OWNER VARCHAR NOT NULL);
               """,
-        )
-    except Exception as e:
-        print(f"we have an error: {e}")
+    )
