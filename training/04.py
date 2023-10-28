@@ -1,36 +1,72 @@
-from airflow.decorators import dag, task
-from pendulum import datetime
-import duckdb
 import pandas as pd
+import pendulum
+
+from airflow.decorators import dag, task
+from duckdb_provider.hooks.duckdb_hook import DuckDBHook
 
 
-@dag(start_date=datetime(2023, 10, 29), schedule=None, catchup=False)
-def duckdb_tutorial_dag_1():
+@dag(
+    schedule=None,
+    start_date=pendulum.datetime(2023, 10, 29, tz="CET"),
+    catchup=False,
+)
+def duckdb_transform():
     @task
-    def create_pandas_df():
-        "Create a pandas DataFrame with toy data and return it."
-        ducks_in_my_garden_df = pd.DataFrame(
-            {"colors": ["blue", "red", "yellow"], "numbers": [2, 3, 4]}
+    def create_df() -> pd.DataFrame:
+        """
+        Create a dataframe with some sample data
+        """
+        df = pd.DataFrame(
+            {
+                "a": [1, 2, 3],
+                "b": [4, 5, 6],
+                "c": [7, 8, 9],
+            }
         )
-
-        return ducks_in_my_garden_df
+        return df
 
     @task
-    def create_duckdb_table_from_pandas_df(ducks_in_my_garden_df):
-        "Create a table in DuckDB based on a pandas DataFrame and query it"
+    def simple_select(df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Use DuckDB to select a subset of the data
+        """
+        hook = DuckDBHook.get_hook('duckdb_default')
+        conn = hook.get_conn()
 
-        # change the path to connect to a different database
-        conn = duckdb.connect("include/my_garden_ducks.db")
-        conn.sql(
-            f"""CREATE TABLE IF NOT EXISTS ducks_garden AS 
-            SELECT * FROM ducks_in_my_garden_df;"""
-        )
+        # execute a simple query
+        res = conn.execute("SELECT a, b, c FROM df WHERE a >= 2").df()
 
-        sets_of_ducks = conn.sql("SELECT numbers FROM ducks_garden;").fetchall()
-        for ducks in sets_of_ducks:
-            print("quack " * ducks[0])
+        return res
 
-    create_duckdb_table_from_pandas_df(ducks_in_my_garden_df=create_pandas_df())
+    @task
+    def add_col(df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Use DuckDB to add a column to the data
+        """
+        hook = DuckDBHook.get_hook('duckdb_default')
+        conn = hook.get_conn()
+
+        # add a column
+        conn.execute("CREATE TABLE tb AS SELECT *, a + b AS d FROM df")
+
+        # get the table
+        return conn.execute("SELECT * FROM tb").df()
+
+    @task
+    def aggregate(df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Use DuckDB to aggregate the data
+        """
+        hook = DuckDBHook.get_hook('duckdb_default')
+        conn = hook.get_conn()
+
+        # aggregate
+        return conn.execute("SELECT SUM(a), COUNT(b) FROM df").df()
+
+    create_df_res = create_df()
+    simple_select_res = simple_select(create_df_res)
+    add_col_res = add_col(simple_select_res)
+    aggregate_res = aggregate(add_col_res)
 
 
-duckdb_tutorial_dag_1()
+duckdb_transform()
