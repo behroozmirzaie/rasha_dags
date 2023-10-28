@@ -6,7 +6,6 @@ from airflow.operators.python import PythonOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 
 
-
 def print_world():
     print('this should be run every minute')
 
@@ -22,10 +21,11 @@ default_args = {
 with DAG(
         dag_id="postgres_operator_dag",
         start_date=dt.datetime.now(),
-        schedule_interval="@once",
-        catchup=False,
+        schedule_interval="@daily",
+        catchup=True,
 ) as dag:
     try:
+        print('start creating table')
         create_pet_table = PostgresOperator(
             conn_id="postgres_data_source_1",
             task_id="create_pet_table",
