@@ -1,21 +1,12 @@
+import datetime
+
 from airflow import DAG
-from airflow.operators.python import PythonOperator
-import airflow
+from airflow.operators.empty import EmptyOperator
 
+with DAG(
+        dag_id="first_dag_training",
+        start_date=datetime.datetime(2023, 1, 1),
+        schedule="@daily",
+):
+    EmptyOperator(task_id="task")
 
-def print_hello():
-    print("Hello, world!")
-
-
-default_args = {
-    'start_date': airflow.utils.dates.days_ago(2),
-    'schedule_interval': '@minute',
-}
-
-with DAG('print_hello_dag', default_args=default_args, author='Behrooz') as dag:
-    print_hello_task = PythonOperator(
-        task_id='print_hello',
-        python_callable=print_hello,
-    )
-
-    print_hello_task
