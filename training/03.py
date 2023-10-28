@@ -22,13 +22,14 @@ with DAG(
         dag_id="postgres_operator_dag",
         start_date=dt.datetime.now(),
         schedule_interval="@daily",
-        catchup=True,
+        catchup=False,
 ) as dag:
     try:
         print('start creating table')
         create_pet_table = PostgresOperator(
             conn_id="postgres_data_source_1",
             task_id="create_pet_table",
+            database="data_source",
             sql="""
                 CREATE TABLE IF NOT EXISTS pet (
                 pet_id SERIAL PRIMARY KEY,
