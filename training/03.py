@@ -24,7 +24,6 @@ with DAG(
         schedule_interval="@daily",
 ) as dag:
     create_pet_table = PostgresOperator(
-        conn_id="postgres_data_source_1",
         task_id="create_pet_table",
         database="data_source",
         sql="""
