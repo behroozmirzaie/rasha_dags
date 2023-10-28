@@ -14,7 +14,7 @@ default_args = {
     'start_date': dt.datetime.now(),
     'retries': 1,
     'retry_delay': dt.timedelta(minutes=1),
-    'schedule_interval': '@minute',
+    'schedule_interval': dt.timedelta(minutes=1),
 }
 
 with DAG(dag_id='v02',
