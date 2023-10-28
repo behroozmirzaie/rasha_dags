@@ -36,3 +36,23 @@ with DAG(
                 birth_date DATE NOT NULL);
               """,
     )
+
+    insert_to_table = PostgresOperator(
+        postgres_conn_id="postgres_data_source_1",
+        task_id="insert_to_table",
+        sql="""
+        INSERT INTO FATEMEH (name, last_name, birth_date) VALUES
+                ('FatemEh Azimi', 'Hashemi', '2003-03-08'),
+                ('Sara Hosseini', 'Farahani', '2002-04-09'),
+                ('Ali Mohammadi', 'Ahmadabadi', '2001-05-10'),
+                ('Kimia Ahmadi', 'Safaie', '2000-06-11'),
+                ('Mohammadreza Jafari', 'Salehi', '1999-07-12'),
+                ('Mahnaz Alizadeh', 'Hosseini', '1998-08-13'),
+                ('Hossein Ahmadi', 'Mohammadi', '1997-09-14'),
+                ('Zahra Hashemi', 'Jafari', '1996-10-15'),
+                ('Alireza Mohammadi', 'Salehi', '1995-11-16'),
+                ('Fatemeh Hosseini', 'Alizadeh', '1994-12-17');
+                """,
+    )
+
+    create_pet_table >> insert_to_table
