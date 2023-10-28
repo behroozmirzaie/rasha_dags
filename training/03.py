@@ -22,7 +22,6 @@ with DAG(
         dag_id="postgres_operator_dag",
         start_date=dt.datetime.now(),
         schedule_interval="@daily",
-        catchup=False,
 ) as dag:
     try:
         print('start creating table')
