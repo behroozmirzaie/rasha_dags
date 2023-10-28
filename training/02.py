@@ -18,7 +18,7 @@ default_args = {
 
 with DAG(dag_id='v02',
          default_args=default_args,
-         schedule_interval='@minute',
+         schedule='@minute',
          ) as dag:
     print_world = PythonOperator(task_id='print_every_minute_2',
                                  python_callable=print_world)
