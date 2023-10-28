@@ -29,11 +29,10 @@ with DAG(
         postgres_conn_id="postgres_data_source_1",
         task_id="create_pet_table",
         sql="""
-                CREATE TABLE IF NOT EXISTS pet (
-                pet_id SERIAL PRIMARY KEY,
+                CREATE TABLE IF NOT EXISTS FATEMEH (
+                id SERIAL PRIMARY KEY,
                 name VARCHAR NOT NULL,
-                pet_type VARCHAR NOT NULL,
-                birth_date DATE NOT NULL,
-                OWNER VARCHAR NOT NULL);
+                last_name VARCHAR NOT NULL,
+                birth_date DATE NOT NULL);
               """,
     )
