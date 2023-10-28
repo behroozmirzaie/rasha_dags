@@ -15,15 +15,17 @@ default_args = {
     'retries': 1,
     'retry_delay': dt.timedelta(minutes=1),
     'schedule_interval': dt.timedelta(minutes=1),
+    'conn_id': 'postgres_data_source_1'
 }
 
 with DAG(
+        default_args=default_args,
         dag_id="postgres_operator_dag",
         start_date=dt.datetime.now(),
         schedule_interval="@daily",
+
 ) as dag:
     create_pet_table = PostgresOperator(
-        conn_id="postgres_data_source_1",
         task_id="create_pet_table",
         sql="""
                 CREATE TABLE IF NOT EXISTS pet (
