@@ -25,8 +25,6 @@ with DAG(
         catchup=False,
 ) as dag:
     create_pet_table = PostgresOperator(
-        database="beh1",
-        host="",
         task_id="create_pet_table",
         sql="""
             CREATE TABLE IF NOT EXISTS pet (
