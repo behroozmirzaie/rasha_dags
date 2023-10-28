@@ -26,7 +26,6 @@ with DAG(
 
 ) as dag:
     create_pet_table = PostgresOperator(
-        execution_timeout=60,
         postgres_conn_id="postgres_data_source_1",
         task_id="create_pet_table",
         sql="""
