@@ -25,7 +25,6 @@ with DAG(
     create_pet_table = PostgresOperator(
         conn_id="postgres_data_source_1",
         task_id="create_pet_table",
-        database="data_source",
         sql="""
                 CREATE TABLE IF NOT EXISTS pet (
                 pet_id SERIAL PRIMARY KEY,
