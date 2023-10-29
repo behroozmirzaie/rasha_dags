@@ -3,6 +3,7 @@ import datetime as dt
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
+import psycopg2
 
 default_args = {
     'owner': 'behrooz',
@@ -15,7 +16,12 @@ default_args = {
 
 
 def print_something():
-    print("hello behrooz")
+    conn = psycopg2.connect(host='localhost', database='data_source', user='postgres', password='rasha_password')
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM fatemeh')
+    rows = cur.fetchall()
+    print(rows)
+    return rows
 
 
 with DAG(
@@ -35,5 +41,3 @@ with DAG(
     )
     print_something = PythonOperator(default_args=default_args, python_callable=print_something,
                                      task_id="python_task_id")
-    print("tasks finished now")
-    print(show_data_from_table)
