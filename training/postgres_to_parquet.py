@@ -30,9 +30,10 @@ with DAG(
         database="data_source",
         task_id="get_data_from_table",
         sql="""
-                SELECT * FROM FATEMEH;
+                SELECT * FROM fatemeh;
               """,
     )
     print_something = PythonOperator(default_args=default_args, python_callable=print_something,
                                      task_id="python_task_id")
-    show_data_from_table
+    print("tasks finished now")
+    print(show_data_from_table)
