@@ -32,5 +32,6 @@ with DAG(
                 SELECT * FROM FATEMEH;
               """,
     )
-    print_something = PythonOperator(default_args=default_args, python_callable=print_something)
+    print_something = PythonOperator(default_args=default_args, python_callable=print_something,
+                                     task_id="python_task_id")
     print_something >> show_data_from_table
