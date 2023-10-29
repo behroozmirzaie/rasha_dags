@@ -27,6 +27,7 @@ with DAG(
 ) as dag:
     show_data_from_table = PostgresOperator(
         postgres_conn_id="postgres_data_source_one",
+        database="fatemeh",
         task_id="get_data_from_table",
         sql="""
                 SELECT * FROM FATEMEH;
