@@ -10,7 +10,6 @@ default_args = {
     'retries': 1,
     'retry_delay': dt.timedelta(minutes=1),
     'schedule_interval': dt.timedelta(minutes=1),
-    'conn_id': 'postgres_get_and_show'
 }
 
 dag = DAG(
@@ -23,7 +22,7 @@ dag = DAG(
 def get_postgres_data():
     conn = psycopg2.connect(host='postgresql', database='data_source', user='postgres', password='rasha_password')
     cur = conn.cursor()
-    cur.execute('SELECT * FROM taxi_trips limit 100000')
+    cur.execute('SELECT * FROM taxi_trips limit 100')
     rows = cur.fetchall()
     return rows
 
@@ -34,13 +33,13 @@ def show_rows(rows):
 
 
 get_postgres_data_operator = PythonOperator(
-    task_id='get_and_show_data',
+    task_id='get_postgres_data_operator',
     python_callable=get_postgres_data,
     dag=dag,
 )
 
 show_rows_operator = PythonOperator(
-    task_id='convert_to_duckdb',
+    task_id='show_rows_operator',
     python_callable=show_rows,
     dag=dag,
 )
