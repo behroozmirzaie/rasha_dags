@@ -18,7 +18,7 @@ default_args = {
 def print_something():
     conn = psycopg2.connect(host='postgresql', database='data_source', user='postgres', password='rasha_password')
     cur = conn.cursor()
-    cur.execute('SELECT * FROM taxi_trips limit 100000')
+    cur.execute('SELECT * FROM taxi_trips limit 110')
     rows = cur.fetchall()
     print(rows)
     return rows
