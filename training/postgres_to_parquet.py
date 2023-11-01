@@ -4,7 +4,7 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 import psycopg2
-
+import duckdb
 default_args = {
     'owner': 'behrooz',
     'start_date': dt.datetime.now(),
