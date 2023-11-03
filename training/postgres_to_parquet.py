@@ -8,7 +8,7 @@ import duckdb
 default_args = {
     'owner': 'behrooz',
     'start_date': dt.datetime.now(),
-    'retries': 1,
+    'retries': 2,
     'retry_delay': dt.timedelta(minutes=1),
     'schedule_interval': dt.timedelta(minutes=1),
     'conn_id': 'get_postgres_data_to_s3_parquet'
